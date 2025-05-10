@@ -1,0 +1,41 @@
+.header-dropdown {
+    position: relative;
+}
+
+.header-dropdown ul {
+    background-color: var(--primary-background-color);
+    border: solid 1px var(--secondary-color);
+    display: none;
+    right: 0;
+    left: auto;
+    width: max-content;
+    text-align: center;
+}
+
+.header-dropdown li {
+    padding: 0.25em 0.5em;
+}
+
+.header-dropdown a,
+.header-dropdown a:visited {
+    text-decoration: none;
+}
+
+.header-dropdown a:hover,
+.header-dropdown a.active {
+    /*color: var(--tertiary-color);*/
+    cursor: pointer;
+}
+
+.header-dropdown li:hover {
+    background: var(--secondary-color-hover);
+}
+
+.header-dropdown:hover ul {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    min-width: 8em;
+    z-index: 1;
+    cursor: pointer;
+}

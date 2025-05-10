@@ -1,0 +1,5 @@
+.text-input-div {
+    display: flex;
+    flex-direction: column;
+    text-align: start;
+}

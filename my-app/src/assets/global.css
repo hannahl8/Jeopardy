@@ -1,0 +1,214 @@
+:root {
+    --default-font-family: "Times New Roman", sans-serif;
+    --default-font-size: 1rem;
+    --default-text-color: white;
+    --error-text-color: #FF69B4;
+
+    /*--primary-color: #646cff;*/
+    /*--secondary-color: #535bf2;*/
+    /*--tertiary-color: #3f46e5;*/
+
+    /*--primary-color: #4a90e2; !* Blue *!*/
+    /*--secondary-color: #7b61ff; !* Purple *!*/
+    /*--tertiary-color: #5c6bc0; !* Indigo *!*/
+
+    /*--primary-color: #1e88e5; !* Blue *!*/
+    /*--secondary-color: #8e24aa; !* Purple *!*/
+    /*--tertiary-color: #3949ab; !* Indigo *!*/
+
+    /*--primary-color: #2196f3; !* Blue *!*/
+    /*--secondary-color: #9c27b0; !* Purple *!*/
+    /*--tertiary-color: #3f51b5; !* Indigo *!*/
+
+    --primary-color: #42a5f5;
+    /* Light Blue */
+    --secondary-color: #ab47bc;
+    --secondary-color-hover: #aa47bc57;
+    /* Light Purple */
+    --tertiary-color: #5c6bc0;
+    /* Indigo */
+
+    /*--primary-color: #64b5f6; !* Light Blue *!*/
+    /*--secondary-color: #ba68c8; !* Light Purple *!*/
+    /*--tertiary-color: #7986cb; !* Indigo *!*/
+
+    --primary-background-color: #242424;
+    --secondary-background-color: #333;
+    --tertiary-background-color: #444;
+}
+
+/* RESET */
+h1,
+h2,
+h3,
+p {
+    margin: 0;
+}
+
+h1,
+h2,
+h3 {
+    line-height: 1;
+}
+
+p {
+    line-height: 1.5;
+}
+
+ol,
+ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+/*
+  By default, a width refers to the width of the content box.
+  This causes unexpected behavior in many situations. The following
+  rule makes width refer to the width of the border box.
+  See the box model (content/padding/border/margin) for details.
+*/
+* {
+    box-sizing: border-box;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+
+label {
+    color: var(--primary-color);
+}
+
+input,
+optgroup,
+select,
+textarea {
+    color: var(--default-text-color);
+    background-color: var(--primary-background-color);
+    border: 2px solid var(--primary-color);
+    font: inherit;
+    border-radius: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+
+body {
+    color: var(--default-text-color);
+    font-family: var(--default-font-family), sans-serif;
+    font-size: var(--default-font-size);
+    margin: 0;
+}
+
+.app {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+
+.container {
+    padding: 1rem;
+}
+
+.main {
+    background-image: linear-gradient(to bottom, var(--primary-background-color), var(--secondary-background-color), var(--tertiary-background-color));
+    margin-top: 120px;
+    padding: 2rem;
+    flex-grow: 1;
+}
+
+/* UTILITY CLASSES */
+
+/*
+  When you get rid of margins, everything is crammed together. For example,
+  paragraphs will have no space between them, which is NOT good design.
+  The following utility class gives a top margin of 1.25rem (20px)
+  to all children inside a parent with class .flow-content,
+  EXCEPT for the first child, which will NOT get a margin.
+  That's because "elem + elem" means that the rule should be applied
+  to the first elem only when it is followed by another elem.
+*/
+.flow-content>*+* {
+    margin-top: 1rem;
+}
+
+.submit-field-error {
+    color: var(--error-text-color);
+    font-size: 0.8rem;
+    margin-top: 0.25rem;
+    font-style: italic;
+}
+
+.submit-status-box {
+    padding: 0.5rem;
+    margin-top: 1rem;
+    border-radius: 8px;
+    color: var(--tertiary-color);
+    font-size: 1.1rem;
+    text-align: center;
+}
+
+/* BUTTONS AND LINKS */
+
+a,
+.a:visited {
+    cursor: pointer;
+    color: var(--primary-color);
+    text-decoration: underline;
+    text-decoration-color: var(--secondary-color);
+}
+
+a:hover,
+a:active {
+    color: var(--tertiary-color);
+}
+
+button,
+.button:visited {
+    margin: 0.25rem;
+    padding: 0.25rem;
+    font-family: inherit;
+    cursor: pointer;
+    border: none;
+    border-radius: 0.5rem;
+    background-color: var(--primary-color);
+    color: var(--default-text-color);
+}
+
+button:hover,
+button:active {
+    background-color: var(--secondary-color);
+}
+
+.icon-button,
+.icon-button:visited {
+    font-size: xx-large;
+    margin: 0.25rem;
+    padding: 0.25rem;
+    font-family: inherit;
+    cursor: pointer;
+    border: none;
+    color: var(--primary-color);
+}
+
+.icon-button:hover,
+.icon-button:active {
+    color: var(--tertiary-color);
+}
+
+.small-icon-button,
+.small-icon-button:visited {
+    font-size: large;
+    margin: 0.25rem;
+    padding: 0.25rem;
+    font-family: inherit;
+    cursor: pointer;
+    border: none;
+    color: var(--secondary-color);
+}
+
+.small-icon-button:hover,
+.small-icon-button:active {
+    color: var(--tertiary-color);
+}

@@ -1,0 +1,38 @@
+.game-div {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.category-div {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    flex: 1 1 300px;
+    box-sizing: border-box;
+}
+
+.category-div h2 {
+    margin: 0;
+    padding-bottom: 1rem;
+    color: var(--primary-color);
+    text-decoration: double underline;
+    text-decoration-color: var(--default-text-color);
+}
+
+.clue-div {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    border-bottom: 5px double var(--tertiary-color);
+}
+
+.clue-div h3 {
+    margin: 0;
+    padding-bottom: 1rem;
+    color: var(--tertiary-color);
+    text-decoration: underline;
+    text-decoration-color: var(--default-text-color);
+}

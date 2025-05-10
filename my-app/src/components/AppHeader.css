@@ -1,0 +1,28 @@
+header {
+    height: 120px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    align-items: center;
+    background-color: var(--primary-background-color);
+    border-bottom: double 5px var(--tertiary-color);
+    z-index: 1000; /* Ensure the header stays on top of other content */
+}
+
+
+.logo-and-text img {
+    width: 5rem;
+    border-radius: 50%;
+    box-shadow:
+    var(--primary-color) 0 0 0.5rem,
+    var(--secondary-color) 0 0 1.0rem,
+    var(--tertiary-color) 0 0 1.5rem;
+}
+
+.logo-and-text:hover {
+    transform: scale(1.1);
+}

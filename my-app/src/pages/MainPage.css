@@ -1,0 +1,54 @@
+ul#game-boxes {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 2rem;
+    gap: 5rem;
+    list-style-type: none;
+}
+
+li.game-box {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+    padding: 2rem;
+    box-shadow: var(--primary-color) 0 0 0.5rem,
+    var(--secondary-color) 0 0 1.0rem,
+    var(--tertiary-color) 0 0 1.5rem;
+    border-radius: 50%;
+    transition: box-shadow 4s ease-out;
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.1);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+li.game-box:hover {
+    box-shadow: white 0 0 0.5rem,
+    yellow 0 0 1.0rem,
+    gold 0 0 1.5rem;
+    animation: none;
+    transform: scale(1.1);
+    cursor: pointer;
+}
+
+li.game-box .game-title {
+    font-size: 2rem;
+}
+
+li.game-box .game-date-created {
+    font-size: smaller;
+    font-style: italic;
+}
