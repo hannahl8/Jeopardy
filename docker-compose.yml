@@ -1,0 +1,32 @@
+version: '3.8'
+services:
+  jeopardy-mysql:
+    build:
+      context: ./MyApp/src/main/resources
+      dockerfile: Dockerfile
+    environment:
+      MYSQL_ROOT_PASSWORD: pancake
+      MYSQL_DATABASE: myappdatabase
+    ports:
+      - "3307:3306"
+    volumes:
+      - db-data:/var/lib/mysql
+  jeopardy-backend:
+    build:
+      context: ./MyApp
+      dockerfile: Dockerfile
+    ports:
+      - "8081:8080"
+    depends_on:
+      - jeopardy-mysql
+  jeopardy-frontend:
+    build:
+      context: ./my-app
+      dockerfile: Dockerfile
+    ports:
+      - "5173:5173"
+    depends_on:
+      - jeopardy-backend
+    command: ["npm", "run", "dev", "--", "--host", "--port", "5173"]
+volumes:
+  db-data:

@@ -9,7 +9,7 @@
               username="root"
               password="pancake"
               driverClassName="com.mysql.cj.jdbc.Driver"
-              url="jdbc:mysql://db:3306/myappdatabase"/>
+              url="jdbc:mysql://jeopardy-mysql:3306/myappdatabase"/>
 </Context>
-<!--db-->
+<!--jeopardy-mysql-->
 <!--localhost-->

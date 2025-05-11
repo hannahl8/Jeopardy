@@ -53,7 +53,25 @@ Creating and deploying a full-stack web application with the specified technolog
      </resource-ref>
      ```
 
-   - Alternatively, define your DataSource directly in `context.xml`.
+   - **Database Configuration in `context.xml`**:
+     - Create or update the `context.xml` file in the `src/main/webapp/META-INF/` directory with the following content:
+     ```xml
+     <Context>
+      <Resource name="jdbc/MyDB" 
+                auth="Container" 
+                type="javax.sql.DataSource" 
+                maxTotal="20" 
+                maxIdle="10" 
+                maxWaitMillis="-1" 
+                username="myuser" 
+                password="mypassword" 
+                driverClassName="com.mysql.cj.jdbc.Driver" 
+                url="jdbc:mysql://localhost:3306/mydatabase"/>
+     </Context>
+     ```
+     
+- **Ensure Proper Deployment**:
+     - The `context.xml` file will be automatically picked up by Tomcat during deployment. Verify the database connection in your application.
 
 ##### **1.2.5. Build and Package**
    - **Build Your Project**:
@@ -61,63 +79,110 @@ Creating and deploying a full-stack web application with the specified technolog
      ```bash
      gradle clean build
      ```
-
-### **2. Dockerize Your Application**
-
-#### **2.2. Backend Dockerfile**
-   - Update the Dockerfile to include the `.war` file for deployment:
-   ```dockerfile
-   FROM tomcat:10.1.24-jdk17
-   COPY build/libs/your-app.war /usr/local/tomcat/webapps/
-   EXPOSE 8080
-   CMD ["catalina.sh", "run"]
-   ```
-
+     
 ### **2. Dockerize Your Application**
 
 #### **2.1. Frontend Dockerfile**
    - Create a `Dockerfile` in your React project:
      ```dockerfile
-     FROM node:18-alpine AS build
-     WORKDIR /app
-     COPY . .
+     FROM node:18-alpine
+     WORKDIR /myapp
+     COPY package.json .
+     COPY package-lock.json .
      RUN npm install
+     COPY ./ ./
      RUN npm run build
-
-     FROM nginx:alpine
-     COPY --from=build /app/dist /usr/share/nginx/html
-     EXPOSE 80
-     CMD ["nginx", "-g", "daemon off;"]
+     EXPOSE 5173
+     CMD ["npm", "run", "dev"]
      ```
 
 #### **2.2. Backend Dockerfile**
    - Create a `Dockerfile` for your Java project:
      ```dockerfile
-     FROM tomcat:10.1.24-jdk17
-     COPY target/your-app.war /usr/local/tomcat/webapps/
+     FROM gradle:jdk17 AS build
+     WORKDIR /app
+     COPY build.gradle settings.gradle ./
+     COPY src ./src
+     RUN gradle war -x test
+     
+     FROM tomcat:10.1.24-jdk17-temurin
+     RUN rm -rf /usr/local/tomcat/webapps/*
+     COPY --from=build /app/build/libs/*.war /usr/local/tomcat/webapps/MyApp.war
      EXPOSE 8080
      CMD ["catalina.sh", "run"]
      ```
 
 #### **2.3. MySQL Dockerfile**
-   - Use the official MySQL image in your `docker-compose.yml`:
-     ```yaml
-     version: '3.8'
-     services:
-       mysql:
-         image: mysql:8.0
-         environment:
-           MYSQL_DATABASE: mydatabase
-           MYSQL_USER: myuser
-           MYSQL_PASSWORD: mypassword
-           MYSQL_ROOT_PASSWORD: rootpassword
-         ports:
-           - "3306:3306"
-         volumes:
-           - my-db:/var/lib/mysql
-     volumes:
-       my-db:
+   - Create a `Dockerfile` for your MySQL database:
+     ```dockerfile
+     FROM mysql:8.0
+     COPY ./schema.sql /docker-entrypoint-initdb.d/01_schema.sql
+     COPY ./data.sql /docker-entrypoint-initdb.d/02_data.sql
+     ENV MYSQL_ROOT_PASSWORD=password
+     ENV MYSQL_DATABASE=myappdatabase
+     EXPOSE 3306
      ```
+     
+#### **2.4. Build Docker Images** 
+
+# Build the MySQL image
+```bash
+docker build -t jeopardy-mysql ./MyApp/src/main/resources
+```
+
+# Build the backend image (dependent on MySQL)
+```bash
+docker build -t jeopardy-backend ./MyApp
+```
+# Build the frontend image (dependent on the backend)
+```bash
+docker build -t jeopardy-frontend ./my-app
+```
+
+#### **2.5. Run docker-compose.yml**
+- Create a `docker-compose.yml` file to run all services:
+
+```yaml
+version: '3.8'
+services:
+  jeopardy-mysql:
+    build:
+      context: ./MyApp/src/main/resources
+      dockerfile: Dockerfile
+    environment:
+      MYSQL_ROOT_PASSWORD: pancake
+      MYSQL_DATABASE: myappdatabase
+    ports:
+      - "3307:3306"
+    volumes:
+      - db-data:/var/lib/mysql
+  jeopardy-backend:
+    build:
+      context: ./MyApp
+      dockerfile: Dockerfile
+    ports:
+      - "8081:8080"
+    depends_on:
+      - jeopardy-mysql
+  jeopardy-frontend:
+    build:
+      context: ./my-app
+      dockerfile: Dockerfile
+    ports:
+      - "5173:5173"
+    depends_on:
+      - jeopardy-backend
+    command: [ "npm", "run", "dev", "--", "--host", "--port", "5173" ]
+volumes:
+  db-data:
+```
+    
+- Run the application using Docker Compose:
+```bash
+docker-compose up --build
+```
+
+- This will build and run all three services: frontend, backend, and MySQL.
 
 ### **3. Set Up Kubernetes**
 
